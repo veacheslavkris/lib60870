@@ -1608,6 +1608,7 @@ namespace lib60870.CS104
                         if (autostart)
                         {
                             netStream.Write(STARTDT_ACT_MSG, 0, STARTDT_ACT_MSG.Length);
+                            DebugLog("netStream.Write(STARTDT_ACT_MSG ...)");
 
                             statistics.SentMsgCounter++;
                         }

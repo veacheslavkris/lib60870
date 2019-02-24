@@ -491,6 +491,8 @@ namespace lib60870.CS104
         protected bool running = false;
 
         private Socket listeningSocket;
+        private InnerMessageHandler innerMessageHandler = null;
+
 
         private int maxQueueSize = 1000;
         private int maxOpenConnections = 10;
@@ -524,11 +526,25 @@ namespace lib60870.CS104
 
         private void DebugLog(string msg)
         {
+            //if (debugOutput)
+            //{
+            //    Console.Write("CS104 SLAVE: ");
+            //    Console.WriteLine(msg);
+            //}
+
             if (debugOutput)
             {
-                Console.Write("CS104 SLAVE: ");
-                Console.WriteLine(msg);
+                if (innerMessageHandler != null)
+                {
+                    innerMessageHandler("CS104 SLAVE: " + msg);
+                }
             }
+
+        }
+
+        protected void SetInnerMessageHandler(InnerMessageHandler inrMessageHandler)
+        {
+            innerMessageHandler = inrMessageHandler;
         }
 
         /// <summary>
@@ -840,7 +856,7 @@ namespace lib60870.CS104
                     redGroups.Add(singleGroup);
                 }
             }
-           
+
             if (serverMode == ServerMode.SINGLE_REDUNDANCY_GROUP || serverMode == ServerMode.MULTIPLE_REDUNDANCY_GROUPS)
             {
                 foreach (RedundancyGroup redGroup in redGroups)
